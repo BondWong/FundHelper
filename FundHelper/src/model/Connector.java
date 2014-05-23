@@ -1,16 +1,11 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.filechooser.FileSystemView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -25,7 +20,7 @@ public class Connector {
 	private static CloseableHttpClient chp;
 	private static ResponseHandler<String> responseHandler;
 	private static Connector instance = null;
-	private final static String DATAURLREX = "http://fund.eastmoney.com/js/fundcode_search.js";
+	private final static String FUNDINFOURL = "http://fund.eastmoney.com/js/fundcode_search.js";
 	
 	private Connector(){
 		chp = HttpClients.createDefault();
@@ -49,52 +44,51 @@ public class Connector {
 		return instance;
 	}
 	
-	@SuppressWarnings("unused")
-	public boolean connect(String URL) {
-		HttpGet get = new HttpGet(URL);
-		String response = "";
+	public String getFundInfo() throws ClientProtocolException, IOException {
+		String fundDatas = "";
+		HttpGet get = new HttpGet(FUNDINFOURL);
 		try {
-			response = chp.execute(get, responseHandler);
+			fundDatas = chp.execute(get, responseHandler);
 		} catch (IOException e) {
+			throw e;
+		}
+		
+		try {
+			fundDatas = new String(fundDatas.getBytes("ISO-8859-1"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
 		
-		Pattern p = Pattern.compile(DATAURLREX);
-		Matcher m = p.matcher(response);
-		String dataURL = "";
-		if(m.find()){
-			dataURL = m.group();
-			return true;
-		}
-		
-		return false;
+		return fundDatas.split("=")[1].replaceFirst(";", "").trim();
 		
 	}
 	
-	public List<String> getFundData() throws IOException{
-		String data = null;
-		BufferedReader br = new BufferedReader(new InputStreamReader(Connector.class.getResourceAsStream("/download.txt")));
-		try {
-			Thread.sleep(1000*8);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public String[][] getRecords(String code) throws ClientProtocolException, IOException {
+		String getRecordsURL = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code=" + code + "&page=1&per=10000&sdate=&edate=";
+		String response = "";
+		
+		HttpGet get = new HttpGet(getRecordsURL);
+		response = chp.execute(get, responseHandler);
+		
+		Pattern pattern = Pattern.compile("<td>(\\d{4})-(\\d{2})-(\\d{2})</td><td class='tor bold'>(\\d{1,}.\\d{1,})</td><td class='tor bold'>(\\d{1,}.\\d{1,})</td>");
+		Matcher m = pattern.matcher(response);
+		
+		List<String[]> temp = new ArrayList<String[]>();
+		while(m.find()){
+			temp.add(new String[]{m.group(1), m.group(2), m.group(3), m.group(4), m.group(5)});
 		}
 		
-		FileSystemView fsv = FileSystemView.getFileSystemView(); 
-		File downloadData = new File(fsv.getHomeDirectory(),"fundData.txt");
-		System.out.println(downloadData.getAbsolutePath());
-		FileWriter writer = new FileWriter(downloadData);
-		
-		List<String> datas = new ArrayList<String>();
-		while((data=br.readLine())!=null){
-			writer.append(data);
-			datas.add(data);
+		String[][] datas = new String[temp.size()][5];
+		for(int i=0;i<temp.size();i++){
+			datas[i] = temp.get(i);
 		}
 		
-		br.close();
-		writer.close();
 		return datas;
+	}
+	
+	public void close() throws IOException{
+		chp.close();
 	}
 	
 }
