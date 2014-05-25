@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="400.0" prefWidth="449.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="203.0" prefWidth="533.0">
+                     <children>
+                        <Button layoutX="322.0" layoutY="14.0" mnemonicParsing="false" text="Add" />
+                        <Button layoutX="392.0" layoutY="14.0" mnemonicParsing="false" text="Go" />
+                        <ComboBox layoutX="20.0" layoutY="37.0" prefWidth="150.0" promptText="基金名称" />
+                        <ComboBox layoutX="204.0" layoutY="37.0" prefHeight="23.0" prefWidth="98.0" promptText="基金类型" />
+                     </children>
+                     <effect>
+                        <Blend />
+                     </effect>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+              </items>
+            </SplitPane>
+         </children></AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <LineChart layoutX="27.0" layoutY="1.0" prefHeight="163.0" prefWidth="556.0">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+         </children></AnchorPane>
+  </items>
+</SplitPane>
