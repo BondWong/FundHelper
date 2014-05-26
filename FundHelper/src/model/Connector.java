@@ -64,7 +64,7 @@ public class Connector {
 		
 	}
 	
-	public String[][] getRecords(String code) throws ClientProtocolException, IOException {
+	public List<List<String>> getRecords(String code) throws ClientProtocolException, IOException {
 		String getRecordsURL = "http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code=" + code + "&page=1&per=10000&sdate=&edate=";
 		String response = "";
 		
@@ -74,17 +74,18 @@ public class Connector {
 		Pattern pattern = Pattern.compile("<td>(\\d{4})-(\\d{2})-(\\d{2})</td><td class='tor bold'>(\\d{1,}.\\d{1,})</td><td class='tor bold'>(\\d{1,}.\\d{1,})</td>");
 		Matcher m = pattern.matcher(response);
 		
-		List<String[]> temp = new ArrayList<String[]>();
+		List<List<String>> temp = new ArrayList<List<String>>();
 		while(m.find()){
-			temp.add(new String[]{m.group(1), m.group(2), m.group(3), m.group(4), m.group(5)});
+			List<String> data = new ArrayList<String>();
+			data.add(m.group(1));
+			data.add(m.group(2));
+			data.add(m.group(3));
+			data.add(m.group(4));
+			data.add(m.group(5));
+			temp.add(data);
 		}
 		
-		String[][] datas = new String[temp.size()][5];
-		for(int i=0;i<temp.size();i++){
-			datas[i] = temp.get(i);
-		}
-		
-		return datas;
+		return temp;
 	}
 	
 	public void close() throws IOException{

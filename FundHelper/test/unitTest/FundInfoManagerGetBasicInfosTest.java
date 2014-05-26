@@ -1,6 +1,8 @@
 package unitTest;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import model.FundInfoManager;
 
@@ -12,9 +14,10 @@ public class FundInfoManagerGetBasicInfosTest {
 	@Test
 	public void testGetBasicInfos() throws ClientProtocolException, IOException{
 		FundInfoManager fim = FundInfoManager.getInstance();
-		String[][] basicInfos = fim.getBasicInfo();
-		for(String[] basicInfo : basicInfos){
-			System.out.println(basicInfo[0] + basicInfo[1] + basicInfo[2] + basicInfo[3]);
+		fim.init();
+		Map<String, List<String>> basicInfos = fim.getBasicInfos();
+		for(List<String> basicInfo : basicInfos.values()){
+			System.out.println(basicInfo);
 		}
 		Assert.assertNotNull(basicInfos);
 	}
