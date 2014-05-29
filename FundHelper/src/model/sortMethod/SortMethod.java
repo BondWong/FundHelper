@@ -12,4 +12,5 @@ public abstract class SortMethod {
 	}
 	
 	protected abstract Comparator<String> getComparator();
+	
 }
