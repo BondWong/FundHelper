@@ -64,6 +64,10 @@ public class FundInfoManager {
 		}
 	}
 	
+	public String[][] getRawBasicInfos() {
+		return basicInfos;
+	}
+	
 	public Map<String, List<String>> getBasicInfos() {
 		if(mapBasicInfos == null){
 			mapBasicInfos = new HashMap<String, List<String>>();
