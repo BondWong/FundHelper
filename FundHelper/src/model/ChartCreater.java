@@ -143,7 +143,7 @@ public class ChartCreater {
 		DefaultCategoryDataset dataset=new DefaultCategoryDataset();
 		for(int i=0; i<fundArray.size(); i++) {
 			Fund fund = fundArray.get(i);
-			Map<String,Integer> typemap = fund.getTypeMap();
+			Map<String,Double> typemap = fund.getTypeMap();
 			Iterator<String> itertype = typemap.keySet().iterator();
 		       while(itertype.hasNext()) {
 		            String ss = itertype.next();

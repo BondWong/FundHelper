@@ -5,7 +5,6 @@ import java.util.List;
 
 import model.FundInfoManager;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class FundInfoManagerGetBasicInfo {

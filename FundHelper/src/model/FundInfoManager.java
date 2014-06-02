@@ -100,6 +100,24 @@ public class FundInfoManager {
 		return mapBasicInfos.get(fundCode);
 	}
 	
+	public String[] getBasicInfoBySN(String SN) {
+		for(String[] basicInfo : basicInfos){
+			if(basicInfo[1].equals(SN))
+				return basicInfo;
+		}
+		
+		return new String[]{"",""};
+	}
+	
+	public String[] getBasicInfoByName(String name) {
+		for(String[] basicInfo : basicInfos){
+			if(basicInfo[2].equals(name))
+				return basicInfo;
+		}
+		
+		return new String[]{"",""};
+	}
+	
 	public List<String> getSortedFundCodes(String type, int top, SortMethod sortMethod){
 		List<String> candidates = new ArrayList<String>();
 		if(mapBasicInfos == null){
@@ -137,6 +155,36 @@ public class FundInfoManager {
 		}
 		
 		return types;
+	}
+	
+	public List<String> getFundCodes() {
+		List<String> fundCodes = new ArrayList<String>();
+		for(String[] basicInfo : basicInfos){
+			if(!fundCodes.contains(basicInfo[0]))
+				fundCodes.add(basicInfo[0]);
+		}
+		
+		return fundCodes;
+	}
+	
+	public List<String> getFundSNs() {
+		List<String> fundSNs = new ArrayList<String>();
+		for(String[] basicInfo : basicInfos){
+			if(!fundSNs.contains(basicInfo[1]))
+				fundSNs.add(basicInfo[1]);
+		}
+		
+		return fundSNs;
+	}
+	
+	public List<String> getFundNames() {
+		List<String> fundNames = new ArrayList<String>();
+		for(String[] basicInfo : basicInfos){
+			if(!fundNames.contains(basicInfo[2]))
+				fundNames.add(basicInfo[2]);
+		}
+		
+		return fundNames;
 	}
 	
 	public List<List<String>> getRecords(String fundCode) throws IOException {
