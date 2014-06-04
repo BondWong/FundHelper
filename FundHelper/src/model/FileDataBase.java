@@ -19,7 +19,7 @@ public class FileDataBase {
 			Files.createFile(Paths.get(path));
 		}
 		
-		String[][] sDatas = new String[datas.size()][datas.get(0).size()];
+		String[][] sDatas = new String[datas.size()][datas.size()==0?0:datas.get(0).size()];
 		for(int i=0;i<sDatas.length;i++){
 			for(int j=0;j<sDatas[i].length;j++){
 				sDatas[i][j] = datas.get(i).get(j);

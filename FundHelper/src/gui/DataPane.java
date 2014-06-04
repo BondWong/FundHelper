@@ -8,9 +8,10 @@ package gui;
 
 import java.io.IOException;
 
+import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.TableModel;
 
-import model.Fund;
 import model.FundInfoManager;
 
 /**
@@ -56,14 +57,21 @@ public class DataPane extends javax.swing.JPanel {
             }
         });
         
-        fundBasicInfoTable.setModel(new javax.swing.table.DefaultTableModel(
+        fundBasicInfoTable.setModel(new FundDataTableModel(
         	data,
             new String [] {
         		"基金代号","基金简称","基金全称","基金类型"
             }
         ));
+        fundBasicInfoTable.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         fundBasicInfoTable.setSize(new java.awt.Dimension(400, 350));
+        fundBasicInfoTable.getColumnModel().setColumnSelectionAllowed(false);
+        for(int i=0;i<fundBasicInfoTable.getColumnCount();i++){
+        	fundBasicInfoTable.getColumnModel().getColumn(i).setResizable(false);
+        }
+        
         fundBasicInfoTable.getTableHeader().setReorderingAllowed(false);
+        
         jScrollPane2.setViewportView(fundBasicInfoTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -87,14 +95,19 @@ public class DataPane extends javax.swing.JPanel {
 
     private void queryButtonMouseClicked(java.awt.event.MouseEvent evt) throws IOException {                                         
         // TODO add your handling code here:
-        int rowIndex = fundBasicInfoTable.getSelectedRow();
-        if(rowIndex != -1){
+        int[] rowIndexs = fundBasicInfoTable.getSelectedRows();
+        System.out.println(rowIndexs.length);
+        if(rowIndexs.length != 0){
         	TableModel model = fundBasicInfoTable.getModel();
-        	String fundCode = (String) model.getValueAt(rowIndex, 0);
-        	String fundName = (String) model.getValueAt(rowIndex, 2);
-        	Fund fund = new Fund(fundName);
-        	fund.setTimeMap(fim.getRecords(fundCode));
-        	System.out.println(fundCode);
+        	String[] fundCodes = new String[rowIndexs.length];
+        	
+        	for(int i=0 ;i<rowIndexs.length ;i++){
+        		fundCodes[i] = (String) model.getValueAt(rowIndexs[i], 0);
+        	}
+        	JPanel panel = LineChart.createLineChart(fim, fundCodes);
+        	LineChartDialog dialog = new LineChartDialog(panel, new javax.swing.JFrame(), true);
+            dialog.setVisible(true);
+        	System.out.println(fundCodes.length);
         }
     }
     
@@ -105,5 +118,5 @@ public class DataPane extends javax.swing.JPanel {
     private javax.swing.JButton queryButton;
     // End of variables declaration//GEN-END:variables
     
-    private FundInfoManager fim;
+	private FundInfoManager fim;
 }

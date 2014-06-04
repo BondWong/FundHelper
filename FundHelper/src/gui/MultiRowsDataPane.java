@@ -8,9 +8,9 @@ package gui;
 
 import java.io.IOException;
 
+import javax.swing.JPanel;
 import javax.swing.table.TableModel;
 
-import model.Fund;
 import model.FundInfoManager;
 
 /**
@@ -117,14 +117,18 @@ public class MultiRowsDataPane extends javax.swing.JPanel {
 
     private void queryButtonMouseClicked(java.awt.event.MouseEvent evt) throws IOException {//GEN-FIRST:event_queryButtonMouseClicked
         // TODO add your handling code here:
-        int rowIndex = fundBasicInfoTable.getSelectedRow();
-        if(rowIndex != -1){
+        int[] rowIndexs = fundBasicInfoTable.getSelectedRows();
+        if(rowIndexs.length != 0){
             TableModel model = fundBasicInfoTable.getModel();
-            String fundCode = (String) model.getValueAt(rowIndex, 0);
-            String fundName = (String) model.getValueAt(rowIndex, 2);
-            Fund fund = new Fund(fundName);
-            fund.setTimeMap(fim.getRecords(fundCode));
-            System.out.println(fundCode);
+            String[] fundCodes = new String[rowIndexs.length];
+            
+            for(int i=0 ;i<rowIndexs.length ;i++){
+        		fundCodes[i] = (String) model.getValueAt(rowIndexs[i], 0);
+        	}
+            JPanel panel = LineChart.createLineChart(fim, fundCodes);
+        	LineChartDialog dialog = new LineChartDialog(panel, new javax.swing.JFrame(), true);
+            dialog.setVisible(true);
+            System.out.println(fundCodes.length);
         }
     }//GEN-LAST:event_queryButtonMouseClicked
     
@@ -161,5 +165,5 @@ public class MultiRowsDataPane extends javax.swing.JPanel {
     private javax.swing.JButton queryButton;
     // End of variables declaration//GEN-END:variables
     
-    private FundInfoManager fim;
+	private FundInfoManager fim;
 }

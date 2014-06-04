@@ -8,9 +8,12 @@ package gui;
 
 import java.io.IOException;
 
+import gui.LineChart;
+import gui.LineChartDialog;
+
+import javax.swing.JPanel;
 import javax.swing.table.TableModel;
 
-import model.Fund;
 import model.FundInfoManager;
 
 /**
@@ -22,11 +25,12 @@ public class SingleRowDataPane extends javax.swing.JPanel {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = -2814177054234939989L;
+	private static final long serialVersionUID = -3119475435743006186L;
+
 	/**
      * Creates new form SingleRowDataPane
      */
-    public SingleRowDataPane(FundInfoManager fim) {
+	public SingleRowDataPane(FundInfoManager fim) {
     	this.fim = fim;
         initComponents();
     }
@@ -73,7 +77,6 @@ public class SingleRowDataPane extends javax.swing.JPanel {
         fundBasicTable.setShowGrid(false);
         fundBasicTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(fundBasicTable);
-        jScrollPane1.setSize(400, 40);
         if (fundBasicTable.getColumnModel().getColumnCount() > 0) {
             fundBasicTable.getColumnModel().getColumn(0).setResizable(false);
             fundBasicTable.getColumnModel().getColumn(1).setResizable(false);
@@ -102,28 +105,42 @@ public class SingleRowDataPane extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(queryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addGap(28, 28, 28))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(queryButton)
-                .addGap(0, 58, Short.MAX_VALUE))
-        );
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(queryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))));
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void queryButtonMouseClicked(java.awt.event.MouseEvent evt) throws IOException {//GEN-FIRST:event_queryButtonMouseClicked
         // TODO add your handling code here:
-        TableModel model = fundBasicTable.getModel();
-        String fundCode = (String) model.getValueAt(0, 0);
-        String fundName = (String) model.getValueAt(0, 2);
-        Fund fund = new Fund(fundName);
-        fund.setTimeMap(fim.getRecords(fundCode));
-        System.out.println(fundCode);
+    	int[] rowIndexs = fundBasicTable.getSelectedRows();
+        if(rowIndexs.length != 0){
+            TableModel model = fundBasicTable.getModel();
+            String[] fundCodes = new String[rowIndexs.length];
+            
+            for(int i=0 ;i<rowIndexs.length ;i++){
+        		fundCodes[i] = (String) model.getValueAt(rowIndexs[i], 0);
+        	}
+            JPanel panel = LineChart.createLineChart(fim, fundCodes);
+        	LineChartDialog dialog = new LineChartDialog(panel, new javax.swing.JFrame(), true);
+            dialog.setVisible(true);
+            System.out.println(fundCodes.length);
+        }
     }//GEN-LAST:event_queryButtonMouseClicked
-    
+
     @SuppressWarnings("serial")
 	public void setData(Object[][] data) {
     	fundBasicTable.setModel(new javax.swing.table.DefaultTableModel(data, 
@@ -144,10 +161,10 @@ public class SingleRowDataPane extends javax.swing.JPanel {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
+            
         });
     }
     
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable fundBasicTable;
     private javax.swing.JScrollPane jScrollPane1;
