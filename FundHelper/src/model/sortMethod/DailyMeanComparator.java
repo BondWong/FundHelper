@@ -1,17 +1,11 @@
 package model.sortMethod;
 
 import java.io.IOException;
-import java.util.Comparator;
-
-import javax.swing.filechooser.FileSystemView;
-
-import com.google.gson.Gson;
 
 import model.FileDataBase;
 
-public class DailyMeanComparator implements Comparator<String>{
-	private static String root = FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath() + "/funddatas";
-	private static Gson gson = new Gson();
+public class DailyMeanComparator extends SimpleComparator{
+	
 	@Override
 	public int compare(String fundCode1, String fundCode2) {
 		// TODO Auto-generated method stub

@@ -12,7 +12,11 @@ import java.util.Map;
 
 import model.FundInfoManager;
 import model.sortMethod.DailyMeanSortMethod;
+import model.sortMethod.FiveYearRaiseSortMethod;
+import model.sortMethod.HalfYearRaiseSortMethod;
+import model.sortMethod.OneYearRaiseSortMethod;
 import model.sortMethod.SortMethod;
+import model.sortMethod.TwoYearRaiseSortMethod;
 
 /**
  *
@@ -28,11 +32,17 @@ public class RangePane extends javax.swing.JPanel {
      * Creates new form RangePane
      */
 	private static Map<String, SortMethod> SORTMETHOD = new HashMap<String, SortMethod>();
+	static{
+		SORTMETHOD.put("日均净值增幅排序", new DailyMeanSortMethod());
+        SORTMETHOD.put("半年收益排序", new HalfYearRaiseSortMethod());
+        SORTMETHOD.put("一年收益排序", new OneYearRaiseSortMethod());
+        SORTMETHOD.put("两年收益排序", new TwoYearRaiseSortMethod());
+        SORTMETHOD.put("五年收益排序", new FiveYearRaiseSortMethod());
+	}
     public RangePane(FundInfoManager fim) {
     	this.fim = fim;
         initComponents(fim.getTypes().toArray());
-        SORTMETHOD.put("日均净值增幅排序", new DailyMeanSortMethod());
-    }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,8 +67,8 @@ public class RangePane extends javax.swing.JPanel {
         multiRowsDataPane2.setVisible(false);
         
         fundTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(type));
-
-        sortMethofComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "日均净值增幅排序" }));
+        
+        sortMethofComboBox.setModel(new javax.swing.DefaultComboBoxModel(SORTMETHOD.keySet().toArray()));
 
         limitComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30", "50", "100", "500" }));
         limitComboBox.addActionListener(new java.awt.event.ActionListener() {
