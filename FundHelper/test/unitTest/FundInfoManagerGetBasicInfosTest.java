@@ -1,5 +1,7 @@
 package unitTest;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +30,7 @@ public class FundInfoManagerGetBasicInfosTest {
 	public void testGetBasicInfo() {
 			List<String> basicInfo = fim.getBasicInfo("000001");
 			System.out.println(basicInfo);
-			Assert.assertNotEquals(0, basicInfo.size());
+			assertEquals(4, basicInfo.size());
 	}
 	
 	@Test
@@ -43,13 +45,13 @@ public class FundInfoManagerGetBasicInfosTest {
 	@Test
 	public void testGetBasicInfoBySN() {
 		String[] basicInfo = fim.getBasicInfoBySN("HXCZ");
-		Assert.assertNotEquals(0, basicInfo.length);
+		assertEquals(4, basicInfo.length);
 	}
 	
 	@Test
 	public void testGetBasicInfoByName() {
 		String[] basicInfo = fim.getBasicInfoByName("华夏成长");
-		Assert.assertNotEquals(0, basicInfo.length);
+		assertEquals(4, basicInfo.length);
 	}
 	
 	@Test
