@@ -11,7 +11,6 @@ public class DailyMeanComparator extends SimpleComparator{
 		// TODO Auto-generated method stub
 		try {
 			double result =  -((dailyMean(fundCode1)/365) - dailyMean(fundCode2)/365);
-			System.out.println(result);
 			if(result > 0)
 				return 1;
 			else if(result < 0)

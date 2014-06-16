@@ -10,13 +10,20 @@ import org.junit.Test;
 
 public class FundInfoManagerGetRecordTest {
 	@Test
-	public void testFundIngoManagerGetRecord() throws IOException{
-		FundInfoManager fim = FundInfoManager.getInstance();
-		fim.init();
-		List<List<String>> record = fim.getRecords("000001");
-		for(List<String> data : record){
-			System.out.println(data);
+	public void testFundIngoManagerGetRecord() {
+		FundInfoManager fim;
+		try {
+			fim = FundInfoManager.getInstance();
+			fim.init();
+			List<List<String>> record = fim.getRecords("000001");
+			for(List<String> data : record){
+				System.out.println(data);
+			}
+			Assert.assertNotNull(record);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail();
 		}
-		Assert.assertNotNull(record);
 	}
 }

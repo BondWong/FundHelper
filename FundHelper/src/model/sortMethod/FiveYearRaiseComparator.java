@@ -11,7 +11,7 @@ public class FiveYearRaiseComparator extends SimpleComparator {
 		// TODO Auto-generated method stub
 		double result;
 		try {
-			result = getFiveYearRaise(o1) - getFiveYearRaise(o2);
+			result = -(getFiveYearRaise(o1) - getFiveYearRaise(o2));
 			if(result > 0)
 				return 1;
 			else if(result < 0)
@@ -33,7 +33,7 @@ public class FiveYearRaiseComparator extends SimpleComparator {
 			return 0.0;
 		double currentValue = Double.parseDouble(datas[0][3]);
 		double compareValue = 0.0;
-		if(datas.length<365*5)
+		if(datas.length<=365*5)
 			compareValue = Double.parseDouble(datas[datas.length-1][3]);
 		else
 			compareValue = Double.parseDouble(datas[365*5][3]);

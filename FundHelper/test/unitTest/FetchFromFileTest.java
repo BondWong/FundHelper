@@ -11,9 +11,16 @@ import org.junit.Test;
 
 public class FetchFromFileTest {
 	@Test
-	public void testFecthFromFile() throws IOException{
-		String datas = FileDataBase.readFromFile(FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath() + "/funddatas"+"/" + "basicInfos.txt");
+	public void testFecthFromFile(){
+		String datas;
+		try {
+			datas = FileDataBase.readFromFile(FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath() + "/funddatas"+"/" + "basicInfos.txt");
+			Assert.assertNotNull(datas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail();
+		}
 		
-		Assert.assertNotNull(datas);
 	}
 }
